@@ -1,16 +1,6 @@
 $(function() {
   (function ( $ ) {
     var plugin = {
-      setData : function(id) {
-        $('#' + id).data('jPicture_plugin', {
-          current_position : 3,
-          first_click : 0,
-          last_position : 0,
-          scroll_position: 30,
-          first_click_scroll : 0,
-          constant : 1,
-        });
-      },
       initialize_content : function($obj) {
         var current_object = $('#picture_content').data('jPicture_plugin');
         //wrap into div class
@@ -38,6 +28,7 @@ $(function() {
       image_process : function(image_position, image_width, visible_image, scroll_width, size, $obj) {
         var current_object = $('#picture_content').data('jPicture_plugin');
         var current_id = $($obj).attr('id');
+        $('#scroll a').removeClass('selected1');
         if(current_id == 'next' || current_id == 'previous') {
           current_object.first_click_scroll = 0;
           current_object.first_click = 0;
@@ -46,25 +37,32 @@ $(function() {
           current_object.current_position = ++current_object.current_position;
           if(!(current_object.current_position <= image_position ) ) {
             $("img").animate({"left": '-=' + image_width}, "slow");
-            plugin.scroll_movement(current_object.current_position, size, visible_image, scroll_width, image_position);
           }
         } else if(current_id == 'previous') {
           current_object.current_position = --current_object.current_position;
           if(!((current_object.last_position >= ((size - (visible_image - image_position) ))) && (current_object.current_position>= ((size - (visible_image - image_position)))))) {
             $("img").animate({"left": '+=' + image_width}, "slow");
-            plugin.scroll_movement(current_object.current_position, size, visible_image, scroll_width, image_position);
           }
         } else {
           var current_position = $($obj).text();
           current_object.current_position = current_position;
           if( !(current_position <= image_position && current_object.last_position <= image_position )) {
-            plugin.scroll_movement(current_position, size, visible_image, scroll_width, image_position);
             plugin.image_movement(visible_image, size, current_position, image_width, image_position);            
           }            
         }
+        plugin.apply_style(current_object.current_position, visible_image, image_position, size);
         plugin.hide_arrows(visible_image, size, image_width, image_position);
         plugin.toggle_postion();
         current_object.last_position = current_object.current_position;
+      },
+      setData : function(id) {
+        $('#' + id).data('jPicture_plugin', {
+          current_position : 3,
+          first_click : 0,
+          last_position : 0,
+          scroll_position: 30,
+          first_click_scroll : 0,
+        });
       },
       set_image_size : function(img_width, img_height, object) {
         var name = $(object).attr('class');
@@ -99,11 +97,11 @@ $(function() {
         $('#scroll').css({'width': (size * (lt_width)) });
         $('#scroll li').css({'width': list_width});
         $('#scroll').append('<div id = active></div>');
-        $('#active').css({'width': ((visible * (lt_width - 4))) + 'px'});
         $('a').addClass('footer');
       },
       hide_arrows : function(visible, size, width, image_position) {
         var current_object = $('#picture_content').data('jPicture_plugin');
+        console.log(image_position);
         if(current_object.current_position <= image_position) {
           $("#previous").hide();
           $('#next').show();
@@ -116,30 +114,35 @@ $(function() {
             $('#next').show();
           }
         }
-      },image_move_at_last : function(current_position, image_position, size, visible, width) {
-        var current_object = $('#picture_content').data('jPicture_plugin');
-        if ((parseInt(current_position, 10) - parseInt(current_object.last_position) ) > image_position){
-          position = current_object.last_position < image_position ? (((size - (visible - image_position)) - (image_position) ))  * parseInt(width, 10) : ((size - (visible - image_position)) - (current_object.last_position) )  * parseInt(width, 10);
-        } else if ((current_object.last_position < (size - (visible - image_position))) && ((current_position >= (size - (visible - image_position))))){
-          position = ((size - (visible - image_position)) - parseInt(current_object.last_position) ) * parseInt(width, 10);
-        }
-        return position;
       },
       image_movement : function(visible, size, current_position, width, image_position) {
         var current_object = $('#picture_content').data('jPicture_plugin');
         var position = 0;
-        console.log('cur_fi' + current_object.first_click);
+        console.log('image');
         if (current_position >= (size - (parseInt(visible, 10) - image_position))) {
           for(var i = 0; i <= (visible -image_position); i++) {
             if (current_position === "" + ((parseInt(size,10) - i))) {
               if (current_object.first_click === 0) {
-                position = current_object.last_position == 0 ? (((parseInt(current_position, 10) -(parseInt(visible) - i)) - parseInt(current_object.last_position, 10) ) * parseInt(width, 10)) : plugin.image_move_at_last(current_position, image_position, size, visible, width);
+                if(current_object.last_position == 0) {
+                  position = (((parseInt(current_position, 10) -(parseInt(visible) - i)) - parseInt(current_object.last_position, 10) ) * parseInt(width, 10) );
+                } else {
+                  if ((parseInt(current_position, 10) - parseInt(current_object.last_position) ) > image_position){
+                    if(current_object.last_position < image_position ) {
+                      position = (((size - (visible - image_position)) - (image_position) ))  * parseInt(width, 10);
+                    } else {
+                      position = ((size - (visible - image_position)) - (current_object.last_position) )  * parseInt(width, 10);
+                    }
+                  } else if ((current_object.last_position < (size - (visible - image_position))) && ((current_position >= (size - (visible - image_position))))){
+                    position = ((size - (visible - image_position)) - parseInt(current_object.last_position) ) * parseInt(width, 10);
+                  }  
+                }
                 $("img").animate({"left": '-=' + position + "px"}, "slow");
                 current_object.first_click++;
               }
               //by arrow it reach last hide the next arrow
               $("#next").hide();
               //by clicking number
+              // break;
             }
           } 
         } else if((current_position < (size - (visible - image_position)) && current_object.last_position > (size - (visible - image_position))) && current_position > image_position) {
@@ -163,9 +166,35 @@ $(function() {
         }
         current_object.last_position = current_position;
       },
+      apply_style : function(start_position, visible_item, image_position, size) {
+        if ((start_position - image_position) <= image_position && start_position > image_position) {
+          for(var j = 0; j < image_position; j++ ) {
+            $('#scroll a:eq(' + ((parseInt(start_position, 10) -j) - 1) +')').addClass('selected1');
+          }
+          for (var i = 0; i <= (visible_item - image_position); i++) {
+            $('#scroll a:eq(' + (parseInt(start_position, 10) + i - 1) +')').addClass('selected1');
+          }
+        } else if(start_position > image_position && start_position <= (size - (visible_item - image_position))) {
+          for(var j = 0; j < image_position; j++ ) {
+            $('#scroll a:eq(' + ((parseInt(start_position, 10) -j) - 1) +')').addClass('selected1');
+          }
+          for (var i = 0; i <= (visible_item - image_position); i++) {
+            $('#scroll a:eq(' + (parseInt(start_position, 10) + i - 1) +')').addClass('selected1');
+          } 
+        } else if (start_position <= image_position) {
+            for (var i = 0; i < visible_item; i++) {
+              $('#scroll a:eq(' + (parseInt(i, 10)) +')').addClass('selected1');
+            }
+        } else if (start_position > (size - (visible_item - image_position))) {
+          var size = size - visible_item;
+          for (var i = 0; i < visible_item; i++) {
+            $('#scroll a:eq(' + (size + i) +')').addClass('selected1');
+          }
+        }
+      },
       show_current_position : function() {
-        var current_object = $('#picture_content').data('jPicture_plugin'), position;
-        position = (parseInt(current_object.current_position, 10) - current_object.constant);
+        var current_object = $('#picture_content').data('jPicture_plugin');
+        var position = (parseInt(current_object.current_position, 10) - 1)
         $('#scroll a:eq('+ position +')').addClass('selected');
         $('.image_grid img:eq('+ position +')').addClass('image_selected');
       },
@@ -173,63 +202,10 @@ $(function() {
         $('#scroll a').removeClass('selected');
         $('.image_grid img').removeClass('image_selected');
       },
-      scroll_movement : function(current_position, size, visible, list_width, image_position) {
-        var scroll_position = 0;
-        var lt_width = parseInt(list_width, 10) - 1;
-        var current_object = $('#picture_content').data('jPicture_plugin');
-        if (current_position > (size - parseInt(visible, 10) + (image_position - current_object.constant))) {
-          for(var i = 0; i <= (visible - image_position); i++) {
-            if (current_position === "" + ((parseInt(size,10) - i)) || current_position === ((parseInt(size,10) - i))) {
-              if (current_object.first_click_scroll === 0) {
-                if(current_object.last_position == 0) {
-                  scroll_position = (((parseInt(current_position, 10) - (parseInt(visible) - i)) - parseInt(current_object.last_position, 10)) * lt_width);
-                } else {
-                  scroll_position = current_object.last_position <= image_position ? (( (size - (visible- (image_position)))) - (image_position)) * lt_width : ((size - (visible- (image_position))) - current_object.last_position)  * lt_width;
-                }
-                current_object.first_click_scroll++;
-              }
-            }
-          }
-        } else if(current_object.last_position == 0 && current_position < (size - (visible - image_position))) {
-          current_object.first_click_scroll = 0;
-          scroll_position = (current_position - image_position) * lt_width;
-        } else if(current_object.last_position < (size - (visible - image_position)) && current_position <= image_position) {
-          current_object.first_click_scroll = 0;
-          scroll_position = (image_position - current_object.last_position) * lt_width;
-        } else if ((current_object.last_position < (size - (visible - image_position))) && (current_object.last_position < image_position)){
-          current_object.first_click_scroll = 0;
-          scroll_position = (current_position  - image_position) * lt_width;
-        } else if ((current_object.last_position >= (size - (visible - image_position)) && (current_position <= image_position))) {
-          current_object.first_click_scroll = 0;
-          scroll_position = (image_position -  (size - (visible - (image_position))) ) * lt_width;
-        } else if((current_object.last_position >= (size - (visible - image_position))) && (current_position > image_position)) {
-          current_object.first_click_scroll = 0;
-          scroll_position = (current_position - (size - (visible - image_position)) ) * lt_width;
-        } else {
-          current_object.first_click_scroll = 0;
-          scroll_position = ( current_position - current_object.last_position) * lt_width;
-        }
-        if (current_object.last_position < current_position && current_position % 5 == 0) {
-          if (current_position > 20 ) {
-            scroll_position += 5;
-          }
-          $('#active').css({'width': ((visible * (lt_width + 1)) + 5) + 'px'});
-        } else if (current_object.last_position > current_position && current_position % 5 == 0){
-          if (current_position < 20 ) {
-            scroll_position -= 5;
-          }
-        }
-        $("#scroll #active").animate({"right": '-=' + scroll_position + "px"}, "slow");
-      }
     };
     $.fn.jPicture_plugin = function(options) {
-      var width, image_width, current_obj;
-      width = $('body').outerWidth();
-      if (options) {
-        image_width = Math.floor(width/options.image_visible);
-      } else {
-        image_width = Math.floor(width/5);
-      }
+      var width = $('body').outerWidth();
+      image_width = Math.floor(width/5);
       var default_settings = {
         image_width:  image_width +'px',
         image_height: '500px',
@@ -239,11 +215,11 @@ $(function() {
         image_visible: 5
       };
       return this.each(function () {
-        var current_object = $('#picture_content').data('jPicture_plugin'), size = 0;
+        var size = 0, current_object;
         if (options) {
           $.extend(default_settings, options);
         }
-        current_obj = this;
+        var current_obj = this;
         plugin.initialize_content(current_obj);
         size = $('.image_grid img').size();
         default_settings.list_width = Math.floor(width/size);
@@ -255,9 +231,11 @@ $(function() {
           $("#next").hide();
           $("#previous").hide();
         }
+        current_object = $('#picture_content').data('jPicture_plugin');
         $("#picture_content a").live('click', function() {
           plugin.image_process(default_settings.image_position, default_settings.image_width, default_settings.image_visible, default_settings.list_width, size, this);
         });
+        plugin.apply_style(current_object.current_position, default_settings.image_visible, default_settings.image_position, size);
         plugin.show_current_position();        
       });
     }

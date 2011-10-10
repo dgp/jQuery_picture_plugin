@@ -11,31 +11,26 @@ a.footer:hover {
 a {
   text-decoration: none;
 }
-a#previous {
+
+a#previous, a#next {
   z-index: 3;
   width: 36px;
   height: 69px;
   position: absolute;
   top: 215px;
-  left: 30px;
   text-indent: -9999px;
-  background: url(images/left.png) no-repeat scroll top left;
   -webkit-transition: left 0.1s ease-out;
   -o-transition: left 0.1s ease-out;
   -moz-transition: right 0.1s ease-out;
 }
+
+a#previous {
+  left: 30px;
+  background: url(images/left.png) no-repeat scroll top left;
+}
 a#next {
-  z-index: 3;
-  width: 36px;
-  height: 69px;
-  position: absolute;
-  top: 215px;
   right: 30px;
-  text-indent: -9999px;
   background: url(images/right.png) no-repeat scroll top left;
-  -webkit-transition: left 0.1s ease-out;
-  -o-transition: left 0.1s ease-out;
-  -moz-transition: right 0.1s ease-out;
 }
 #scroll {
   display: block;
