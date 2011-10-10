@@ -8,6 +8,9 @@
 a.footer:hover {
   border-bottom: 2px solid #766868;
 }
+a {
+  text-decoration: none;
+}
 a#previous {
   z-index: 3;
   width: 36px;
