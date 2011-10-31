@@ -1,18 +1,18 @@
-.footer {
+.scroll_number {
   text-decoration: none;
   margin-right: 25px;
   margin-left: 5px;
   color: black;
   font-size: 13px;
 }
-a.footer:hover {
+#scroll li a.scroll_number:hover {
   border-bottom: 2px solid #766868;
 }
-a {
+#scroll li a.scroll-number {
   text-decoration: none;
 }
 
-a#previous, a#next {
+#picture_content a#previous,#picture_content a#next {
   z-index: 3;
   width: 36px;
   height: 69px;
@@ -24,11 +24,11 @@ a#previous, a#next {
   -moz-transition: right 0.1s ease-out;
 }
 
-a#previous {
+#picture_content a#previous {
   left: 30px;
   background: url(images/left.png) no-repeat scroll top left;
 }
-a#next {
+#picture_content a#next {
   right: 30px;
   background: url(images/right.png) no-repeat scroll top left;
 }
@@ -48,10 +48,10 @@ a#next {
   -o-transition: left 0.1s ease-out;
   -moz-transition: right 0.1s ease-out;
 }
-.image_selected {
+#picture_content .image_grid li.image_selected {
   border: 1px solid black;
 }
-#active {
+#scroll #active {
   background-color:#bca;
   margin-right: 10px;
   position: relative;
