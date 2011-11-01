@@ -1,18 +1,15 @@
-.scroll_number {
+#picture_panel #scroll li a.scroll_number {
   text-decoration: none;
   margin-right: 25px;
   margin-left: 5px;
   color: black;
   font-size: 13px;
-}
-#scroll li a.scroll_number:hover {
-  border-bottom: 2px solid #766868;
-}
-#scroll li a.scroll-number {
   text-decoration: none;
 }
-
-#picture_content a#previous,#picture_content a#next {
+#picture_panel #scroll li a.scroll_number:hover {
+  border-bottom: 2px solid #766868;
+}
+#picture_panel #picture_content a#previous,#picture_panel #picture_content a#next {
   z-index: 3;
   width: 36px;
   height: 69px;
@@ -24,23 +21,23 @@
   -moz-transition: right 0.1s ease-out;
 }
 
-#picture_content a#previous {
+#picture_panel #picture_content a#previous {
   left: 30px;
   background: url(images/left.png) no-repeat scroll top left;
 }
-#picture_content a#next {
+#picture_panel #picture_content a#next {
   right: 30px;
   background: url(images/right.png) no-repeat scroll top left;
 }
-#scroll {
+#picture_panel #scroll {
   display: block;
-  height: 20px; 
-  /*background: url(images/scroll.png) repeat-x;*/
+  height: 20px;
   margin :3px auto;
   z-index: 5;
+  background-color: #F2F2F2;
   position: relative;
 }
-.selected {
+#picture_panel #scroll li a.selected {
   border: 2px solid gray;
   background-color: gray;
   border-radius: 3px;
@@ -48,10 +45,10 @@
   -o-transition: left 0.1s ease-out;
   -moz-transition: right 0.1s ease-out;
 }
-#picture_content .image_grid li.image_selected {
+#picture_panel #picture_content ul.image_grid li.image_selected {
   border: 1px solid black;
 }
-#scroll #active {
+#picture_panel #scroll #active {
   background-color:#bca;
   margin-right: 10px;
   position: relative;
@@ -68,10 +65,7 @@
   font-weight: bold;
   color: #FF8D00
 }
-#scroll {
-  background-color: #F2F2F2;
-}
-#scroll li {
+#picture_panel #scroll li {
   list-style: none;
   float: left;
 }
