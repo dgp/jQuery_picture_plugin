@@ -11,15 +11,13 @@ $(function() {
           constant : 1,
         });
       },
-      initialize_content : function($obj) {
+      initialize_content : function(obj) {
         var current_object = $('#picture_content').data('jPicture_plugin');
         //wrap into div class
-        $($obj).wrap('<div id = picture_content></div>');
-        //remove the class name which given by user
+        $(obj).wrap('<div id = picture_content></div>');
         $('#picture_content').wrap('<div id = picture_panel></div>');
-        $($obj).removeClass();
         //add the class name
-        $($obj).addClass('image_grid');
+        $(obj).addClass('image_grid');
         //getting the image count
       },
       initialize_gird : function(image_width, image_height, current_obj, visible_image, content_height, size, scroll_width) {
@@ -36,9 +34,9 @@ $(function() {
         plugin.remove_previous_position();
         plugin.show_current_position();
       },
-      image_process : function(image_position, image_width, visible_image, scroll_width, size, $obj) {
+      image_process : function(image_position, image_width, visible_image, scroll_width, size, obj) {
         var current_object = $('#picture_content').data('jPicture_plugin');
-        var current_id = $($obj).attr('id');
+        var current_id = $(obj).attr('id');
         if(current_id == 'next' || current_id == 'previous') {
           current_object.first_click_scroll = 0;
           current_object.first_click = 0;
@@ -56,7 +54,7 @@ $(function() {
             plugin.scroll_movement(current_object.current_position, size, visible_image, scroll_width, image_position);
           }
         } else {
-          var current_position = $($obj).text();
+          var current_position = $(obj).text();
           current_object.current_position = current_position;
           console.log(current_position);
           if( !(current_position <= image_position && current_object.last_position <= image_position )) {

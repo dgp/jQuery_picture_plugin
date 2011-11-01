@@ -7,8 +7,10 @@
     </script>
     <script type="text/javascript">
     $(function () {
-      //$('.image').dinesh_picture({image_visible: 4});
-      $('.image').jPicture_plugin();
+      var imageElement = $('.image');
+      if(imageElement && imageElement.children().size() > 0){
+        imageElement.jPicture_plugin();
+      }
     });
     </script>
   </head>
@@ -18,25 +20,8 @@
        <li><img src = "images/12.jpg"></li>
        <li><img src = "images/13.jpg"></li>
        <li><img src = "images/14.jpg"></li>
-       <li><img src = "images/15.jpg"></li>
        <li><img src = "images/16.jpg"></li>
        <li><img src = "images/17.jpg"></li>
-       <li><img src = "images/18.jpg"></li>
-       <li><img src = "images/19.jpg"></li>
-       <li><img src = "images/20.jpg"></li>
-       <li><img src = "images/21.jpg"></li>
-       <li><img src = "images/23.jpg"></li>
-        <li><img src = "images/24.jpg"></li>
-        <li><img src = "images/25.jpg"></li>
-        <li><img src = "images/26.jpg"></li>
-        <li><img src = "images/27.jpg"></li>
-        <li><img src = "images/28.jpg"></li>
-        <li><img src = "images/29.jpg"></li>
-        <li><img src = "images/30.jpg"></li>
-        <li><img src = "images/31.jpg"></li>
-        <li><img src = "images/32.jpg"></li>
-        <li><img src = "images/33.jpg"></li>
-        
-     </div>
+    </ul>
   </body>
 </html>
